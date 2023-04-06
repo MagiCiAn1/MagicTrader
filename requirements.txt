@@ -1,0 +1,7 @@
+akshare==1.9.25
+matplotlib==3.7.1
+numpy==1.24.2
+pandas==1.5.3
+schedule==1.1.0
+tushare==1.2.89
+util==0.0.1
