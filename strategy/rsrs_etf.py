@@ -233,6 +233,12 @@ def get_timing_signal(context, stock):
 
     print('rsrs_slope {:.3f}'.format(rsrs_slope) + ' rsrs_score {:.3f} '.format(rsrs_score)
           + ' idex_slope {:.3f} '.format(idex_slope))
+    # 通过摆动指数，提早知道趋势的变化，这种情况优先于RSRS
+    wr1 = get_william(context['ref_stock'], 14)
+    wr2 = get_william(context['ref_stock'], 21)
+    print(f'wr1={wr1},wr2={wr2}')
+    # if WR1[g.ref_stock]<=2 and WR2[g.ref_stock] <=2: return "SELL"
+    if wr1 >= 97 and wr2 >= 97: return "BUY"
     # 表示上升趋势快结束了，即将出现下跌
     if (rsrs_slope < 0 and rsrs_score > 0):
         return "SELL"

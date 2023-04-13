@@ -1,6 +1,7 @@
 import datetime
 
 import akshare as ak
+import numpy as np
 
 
 def attribute_history(security, count, unit='1d', fields=None, skip_paused=True, df=True, fq='qfq'):
@@ -71,11 +72,34 @@ def get_current_data(security):
     return result
 
 
+# 计算威廉指标
+def get_william(security, n=14):
+    data = attribute_history_etf(security, n, unit='1d', fields=['date', 'high', 'low', 'close'])
+    # print(data)
+    high = data.high.values
+    # print(high)
+    low = data.low.values
+    # print(low)
+    # 计算high和low的最大值和最小值
+    high_max = np.max(high)
+    low_min = np.min(low)
+    # print(high_max)
+    # print(low_min)
+    # 计算威廉指标
+    william = 100 * (high_max - data.close.values[-1]) / (high_max - low_min)
+    # print(william)
+    # (4132.295 - 4100.148) / (4132.295 - 3983.896)
+    return william
+
+
 if __name__ == '__main__':
-    data = attribute_history_etf('sh510300', 5, unit='1d', fields=['date', 'open', 'high', 'low', 'close', 'volume'])
-    print(data)
-    print(data.close.values[-1])
-    adr = 100 * (data.close.values[-1] - data.close.values[-2]) / data.close.values[-2]
-    print(adr)
-    data = get_current_data('sh510300').last_price.values[0]
-    print(data)
+    # data = attribute_history_etf('sh510300', 5, unit='1d', fields=['date', 'open', 'high', 'low', 'close', 'volume'])
+    # print(data)
+    # print(data.close.values[-1])
+    # adr = 100 * (data.close.values[-1] - data.close.values[-2]) / data.close.values[-2]
+    # print(adr)
+    # data = get_current_data('sh510300').last_price.values[0]
+    # print(data)
+    wr1 = get_william('sh000300', 14)
+    # wr2 = get_william('sh000300', 21)
+    # print(f'WR1: {wr1}, WR2: {wr2}')
